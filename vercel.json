@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic_api_key",
+    "TAVILY_API_KEY": "@tavily_api_key"
+  }
+}
