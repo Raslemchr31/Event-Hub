@@ -1,15 +1,19 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { CompanyContext, IcebreakerResult } from '@/lib/types';
 
-const genAI = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || '');
 
 export async function generateIcebreakers(
   context: CompanyContext,
   numQuestions: number = 4
 ): Promise<IcebreakerResult> {
   try {
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      console.error('GOOGLE_GENERATIVE_AI_API_KEY is not set');
+      return createFallbackIcebreakers(context);
+    }
+
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
     const contextText = buildContextText(context);
 
     const prompt = `You are a professional networking assistant helping attendees at green energy and industrial sector events. Your job is to generate thoughtful, specific icebreaker questions based on company information.
@@ -35,12 +39,9 @@ Return a JSON object with:
 
 Make the questions specific to their work, not generic networking questions.`;
 
-    const response = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-    });
-
-    const text = response.text;
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
     if (!text) {
       return createFallbackIcebreakers(context);

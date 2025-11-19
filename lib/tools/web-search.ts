@@ -23,6 +23,7 @@ export async function webSearch(
     const response = await axios.post(
       'https://api.tavily.com/search',
       {
+        api_key: tavilyApiKey, // API key in body
         query,
         max_results: numResults,
         include_answer: true,
@@ -31,9 +32,6 @@ export async function webSearch(
       {
         headers: {
           'Content-Type': 'application/json',
-        },
-        params: {
-          api_key: tavilyApiKey,
         },
         timeout: 15000,
       }

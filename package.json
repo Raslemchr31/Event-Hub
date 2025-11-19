@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@google/genai": "^1.30.0",
+    "@google/generative-ai": "^0.24.1",
     "@sparticuz/chromium": "^131.0.0",
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",

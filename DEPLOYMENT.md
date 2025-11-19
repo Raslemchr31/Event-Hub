@@ -33,8 +33,8 @@
 3. **Configure Environment Variables**
    - In Vercel project settings → Environment Variables:
    ```
-   GEMINI_API_KEY = your-gemini-api-key-here
-   TAVILY_API_KEY = your-tavily-api-key-here
+   GOOGLE_GENERATIVE_AI_API_KEY = your-gemini-api-key-here
+   TAVILY_API_KEY = tvly-your-api-key-here
    ```
    - Select all environments (Production, Preview, Development)
 
@@ -68,8 +68,8 @@
 
    Edit `.env.local`:
    ```
-   GEMINI_API_KEY=your-gemini-api-key-here
-   TAVILY_API_KEY=your-tavily-api-key-here
+   GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key-here
+   TAVILY_API_KEY=tvly-your-api-key-here
    ```
 
 3. **Run Development Server**
@@ -100,7 +100,7 @@
 
 ## Production Checklist
 
-- [ ] Gemini API key added to Vercel
+- [ ] Google Generative AI API key added to Vercel (GOOGLE_GENERATIVE_AI_API_KEY)
 - [ ] Tavily API key added to Vercel (optional)
 - [ ] Deployed to Vercel successfully
 - [ ] Tested QR scanning on mobile
@@ -137,7 +137,7 @@
 
 **Solutions**:
 - Check Vercel logs for specific error
-- Verify `GEMINI_API_KEY` is set correctly
+- Verify `GOOGLE_GENERATIVE_AI_API_KEY` is set correctly
 - Check API key has sufficient credits
 - Verify API key hasn't expired
 

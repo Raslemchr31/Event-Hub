@@ -18,7 +18,11 @@ export default function CameraCapture({ onCapture, onCancel }: CameraCaptureProp
     try {
       setError(null);
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }, // Back camera
+        video: {
+          facingMode: 'environment', // Back camera
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
         audio: false,
       });
 
@@ -73,7 +77,7 @@ export default function CameraCapture({ onCapture, onCancel }: CameraCaptureProp
 
   return (
     <div className="w-full">
-      <div className="relative bg-black rounded-lg overflow-hidden" style={{ aspectRatio: '4/3' }}>
+      <div className="relative bg-black rounded-lg overflow-hidden min-h-[500px] md:min-h-[600px]">
         <video
           ref={videoRef}
           autoPlay
@@ -126,7 +130,7 @@ export default function CameraCapture({ onCapture, onCancel }: CameraCaptureProp
       )}
 
       <p className="mt-3 text-sm text-gray-600 text-center">
-        Take a clear photo of the booth, flyer, or business card
+        Take a clear photo of the booth, flyer, or business card (larger view for easier capture)
       </p>
     </div>
   );

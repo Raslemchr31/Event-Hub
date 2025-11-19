@@ -49,8 +49,8 @@ cp .env.example .env.local
 
 4. Add your API keys to `.env.local`:
 ```
-GEMINI_API_KEY=your-gemini-api-key-here
-TAVILY_API_KEY=your-tavily-api-key-here
+GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key-here
+TAVILY_API_KEY=tvly-your-api-key-here
 ```
 
 5. Run the development server:
@@ -91,7 +91,7 @@ For camera access to work on mobile devices:
 1. Push to GitHub
 2. Import to Vercel
 3. Add environment variables in Vercel dashboard:
-   - `GEMINI_API_KEY`
+   - `GOOGLE_GENERATIVE_AI_API_KEY`
    - `TAVILY_API_KEY`
 4. Deploy
 

@@ -1,24 +1,24 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { CompanyContext } from '@/lib/types';
 
-const genAI = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || '');
 
 export async function analyzeImage(
   imageBase64: string,
   context?: string
 ): Promise<CompanyContext> {
   try {
-    const contents = [
-      {
-        inlineData: {
-          mimeType: 'image/jpeg',
-          data: imageBase64,
-        },
-      },
-      {
-        text: `Analyze this image from an event booth or flyer. Extract:
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      console.error('GOOGLE_GENERATIVE_AI_API_KEY is not set');
+      return {
+        name: '',
+        confidence: 0,
+      };
+    }
+
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+
+    const prompt = `Analyze this image from an event booth or flyer. Extract:
 1. Company name
 2. Industry/sector (especially green energy, industrial, engineering)
 3. Products or services mentioned
@@ -35,16 +35,18 @@ Return the information in this exact JSON format:
   "confidence": 0-100
 }
 
-If you cannot clearly read the information, set confidence low and explain what you can see.`,
+If you cannot clearly read the information, set confidence low and explain what you can see.`;
+
+    const imagePart = {
+      inlineData: {
+        data: imageBase64,
+        mimeType: 'image/jpeg',
       },
-    ];
+    };
 
-    const response = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: contents,
-    });
-
-    const text = response.text;
+    const result = await model.generateContent([prompt, imagePart]);
+    const response = result.response;
+    const text = response.text();
 
     if (!text) {
       return {
