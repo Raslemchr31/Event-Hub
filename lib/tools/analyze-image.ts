@@ -1,8 +1,8 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenAI } from '@google/genai';
 import { CompanyContext } from '@/lib/types';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const genAI = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export async function analyzeImage(
@@ -10,24 +10,15 @@ export async function analyzeImage(
   context?: string
 ): Promise<CompanyContext> {
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: 'image/jpeg',
-                data: imageBase64,
-              },
-            },
-            {
-              type: 'text',
-              text: `Analyze this image from an event booth or flyer. Extract:
+    const contents = [
+      {
+        inlineData: {
+          mimeType: 'image/jpeg',
+          data: imageBase64,
+        },
+      },
+      {
+        text: `Analyze this image from an event booth or flyer. Extract:
 1. Company name
 2. Industry/sector (especially green energy, industrial, engineering)
 3. Products or services mentioned
@@ -45,19 +36,25 @@ Return the information in this exact JSON format:
 }
 
 If you cannot clearly read the information, set confidence low and explain what you can see.`,
-            },
-          ],
-        },
-      ],
+      },
+    ];
+
+    const response = await genAI.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: contents,
     });
 
-    const content = response.content[0];
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response type');
+    const text = response.text;
+
+    if (!text) {
+      return {
+        name: '',
+        confidence: 0,
+      };
     }
 
     // Parse JSON from response
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       return {
         name: '',

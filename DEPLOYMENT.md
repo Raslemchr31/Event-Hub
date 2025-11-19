@@ -4,11 +4,11 @@
 
 ### Step 1: Get API Keys
 
-1. **Anthropic API Key** (Required)
-   - Go to https://console.anthropic.com
-   - Sign up or log in
-   - Create a new API key
-   - Copy the key (starts with `sk-ant-`)
+1. **Google Gemini API Key** (Required)
+   - Go to https://aistudio.google.com/app/apikey
+   - Sign up or log in with Google account
+   - Click "Create API Key"
+   - Copy the API key
 
 2. **Tavily API Key** (Optional but recommended)
    - Go to https://tavily.com
@@ -33,8 +33,8 @@
 3. **Configure Environment Variables**
    - In Vercel project settings → Environment Variables:
    ```
-   ANTHROPIC_API_KEY = sk-ant-your-key-here
-   TAVILY_API_KEY = tvly-your-key-here
+   GEMINI_API_KEY = your-gemini-api-key-here
+   TAVILY_API_KEY = your-tavily-api-key-here
    ```
    - Select all environments (Production, Preview, Development)
 
@@ -68,8 +68,8 @@
 
    Edit `.env.local`:
    ```
-   ANTHROPIC_API_KEY=sk-ant-your-key-here
-   TAVILY_API_KEY=tvly-your-key-here
+   GEMINI_API_KEY=your-gemini-api-key-here
+   TAVILY_API_KEY=your-tavily-api-key-here
    ```
 
 3. **Run Development Server**
@@ -100,7 +100,7 @@
 
 ## Production Checklist
 
-- [ ] Anthropic API key added to Vercel
+- [ ] Gemini API key added to Vercel
 - [ ] Tavily API key added to Vercel (optional)
 - [ ] Deployed to Vercel successfully
 - [ ] Tested QR scanning on mobile
@@ -137,7 +137,7 @@
 
 **Solutions**:
 - Check Vercel logs for specific error
-- Verify `ANTHROPIC_API_KEY` is set correctly
+- Verify `GEMINI_API_KEY` is set correctly
 - Check API key has sufficient credits
 - Verify API key hasn't expired
 
@@ -153,11 +153,11 @@
 
 ## Cost Estimates
 
-### Anthropic Claude API
-- **Image Analysis**: ~$0.003 per image (Claude Sonnet 4.5)
-- **Icebreaker Generation**: ~$0.003 per request
-- **Estimated**: $0.006 per complete interaction
-- **100 users/day**: ~$0.60/day = $18/month
+### Google Gemini API
+- **Image Analysis**: ~$0.0001 per image (Gemini 2.5 Flash - significantly cheaper!)
+- **Icebreaker Generation**: ~$0.0001 per request
+- **Estimated**: $0.0002 per complete interaction (30x cheaper than Claude!)
+- **100 users/day**: ~$0.02/day = $0.60/month (extremely affordable!)
 
 ### Tavily API
 - **Free Tier**: 1000 searches/month
@@ -179,7 +179,7 @@
 
 1. **Test at Real Event**: Take to an actual event and test with real QR codes
 2. **Gather Feedback**: Get user feedback on icebreaker quality
-3. **Monitor Usage**: Track API costs in Anthropic dashboard
+3. **Monitor Usage**: Track API costs in Google AI Studio dashboard
 4. **Optimize**: Reduce API calls where possible
 5. **Analytics**: Add simple analytics to track usage patterns
 

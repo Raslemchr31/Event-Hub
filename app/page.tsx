@@ -328,7 +328,7 @@ export default function Home() {
 
         {/* Footer */}
         <div className="text-center mt-6 text-sm text-gray-600">
-          Powered by Claude AI
+          Powered by Google Gemini AI
         </div>
       </div>
     </main>

@@ -6,7 +6,7 @@ AI-powered mobile app for event attendees at green energy and industrial sector 
 
 - **QR Code Scanner**: Scan exhibitor QR codes via phone camera
 - **Smart Web Scraper**: Extract company info from QR destination URL
-- **Image Analysis**: Photograph booth/flyer and extract context using Claude Vision API
+- **Image Analysis**: Photograph booth/flyer and extract context using Google Gemini Vision API
 - **Intelligent Web Search**: Search web with smart keywords when direct info unavailable
 - **Icebreaker Generator**: Produce 3-5 conversation starters based on company context
 - **Confidence-Based Flow**: Agent asks for more context when confidence is low
@@ -14,7 +14,7 @@ AI-powered mobile app for event attendees at green energy and industrial sector 
 ## Tech Stack
 
 - **Next.js 14** (App Router) with TypeScript
-- **Claude AI** (Sonnet 4.5) for image analysis and icebreaker generation
+- **Google Gemini AI** (Gemini 2.5 Flash) for image analysis and icebreaker generation
 - **Tavily API** for intelligent web search
 - **html5-qrcode** for QR scanning
 - **Cheerio** for web scraping
@@ -26,7 +26,7 @@ AI-powered mobile app for event attendees at green energy and industrial sector 
 ### Prerequisites
 
 - Node.js 18+ installed
-- Anthropic API key (get from [console.anthropic.com](https://console.anthropic.com))
+- Google Gemini API key (get from [aistudio.google.com](https://aistudio.google.com/app/apikey))
 - Tavily API key (optional, get from [tavily.com](https://tavily.com))
 
 ### Installation
@@ -49,8 +49,8 @@ cp .env.example .env.local
 
 4. Add your API keys to `.env.local`:
 ```
-ANTHROPIC_API_KEY=sk-ant-your-key-here
-TAVILY_API_KEY=tvly-your-key-here
+GEMINI_API_KEY=your-gemini-api-key-here
+TAVILY_API_KEY=your-tavily-api-key-here
 ```
 
 5. Run the development server:
@@ -91,7 +91,7 @@ For camera access to work on mobile devices:
 1. Push to GitHub
 2. Import to Vercel
 3. Add environment variables in Vercel dashboard:
-   - `ANTHROPIC_API_KEY`
+   - `GEMINI_API_KEY`
    - `TAVILY_API_KEY`
 4. Deploy
 
@@ -187,7 +187,7 @@ Check Confidence (threshold: 70%)
 - iOS camera only works in Safari (not Chrome/Firefox)
 - QR scanner requires camera permissions
 - Tavily API: 1000 free searches/month (then paid)
-- Image analysis uses Claude API credits
+- Image analysis uses Google Gemini API credits
 
 ## Success Criteria
 

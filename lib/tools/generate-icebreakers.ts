@@ -1,8 +1,8 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenAI } from '@google/genai';
 import { CompanyContext, IcebreakerResult } from '@/lib/types';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const genAI = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export async function generateIcebreakers(
@@ -12,10 +12,7 @@ export async function generateIcebreakers(
   try {
     const contextText = buildContextText(context);
 
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2048,
-      system: `You are a professional networking assistant helping attendees at green energy and industrial sector events. Your job is to generate thoughtful, specific icebreaker questions based on company information.
+    const prompt = `You are a professional networking assistant helping attendees at green energy and industrial sector events. Your job is to generate thoughtful, specific icebreaker questions based on company information.
 
 CRITICAL RULES:
 - Generate questions that are specific to THIS company, not generic
@@ -23,11 +20,9 @@ CRITICAL RULES:
 - Be professional, patient, and genuinely curious
 - Questions should demonstrate you did your research
 - Avoid yes/no questions - ask open-ended ones
-- Match this communication style: patient, thoughtful, technically informed but approachable`,
-      messages: [
-        {
-          role: 'user',
-          content: `Based on this company information, generate ${numQuestions} specific icebreaker questions I can ask their booth representative:
+- Match this communication style: patient, thoughtful, technically informed but approachable
+
+Based on this company information, generate ${numQuestions} specific icebreaker questions I can ask their booth representative:
 
 ${contextText}
 
@@ -38,18 +33,21 @@ Return a JSON object with:
   "key_topics": ["topic 1", "topic 2", ...]
 }
 
-Make the questions specific to their work, not generic networking questions.`,
-        },
-      ],
+Make the questions specific to their work, not generic networking questions.`;
+
+    const response = await genAI.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
     });
 
-    const content = response.content[0];
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response type');
+    const text = response.text;
+
+    if (!text) {
+      return createFallbackIcebreakers(context);
     }
 
     // Parse JSON from response
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       return createFallbackIcebreakers(context);
     }
