@@ -1,9 +1,5 @@
 {
   "buildCommand": "npm run build",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "GEMINI_API_KEY": "@gemini_api_key",
-    "TAVILY_API_KEY": "@tavily_api_key"
-  }
+  "regions": ["iad1"]
 }
