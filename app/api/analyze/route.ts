@@ -74,23 +74,32 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // STEP 3: Enhance with web search if needed
+    // STEP 3: Comprehensive web research (patient and thorough)
     if (context.name) {
-      step = 'Searching for recent information...';
-      console.log('Running web search for:', context.name);
-      const searchQuery = `${context.name} ${context.industry || 'green energy industrial'} recent projects news`;
-      const searchResults = await webSearch(searchQuery, 5);
+      step = 'Performing comprehensive web research... This may take a moment.';
+      console.log('🔎 Starting thorough web research for:', context.name);
+      console.log('Industry context:', context.industry || 'not specified');
+
+      // Build comprehensive search query
+      const searchQuery = `${context.name} ${context.industry || 'green energy industrial solar renewable'} company information recent projects news`;
+      console.log('Search query:', searchQuery);
+
+      const searchResults = await webSearch(searchQuery, 8); // More results for thoroughness
       console.log('Web search confidence:', searchResults.confidence);
 
-      // Merge search results with existing context
+      // Merge search results with existing context - prefer richer web search data
       context = {
         ...context,
-        description: searchResults.description || context.description,
+        description: searchResults.description && searchResults.description.length > 100
+          ? searchResults.description
+          : context.description || searchResults.description,
         recent_news: searchResults.recent_news || context.recent_news,
         confidence: Math.max(context.confidence, searchResults.confidence),
       };
+
+      console.log('Final confidence after web search:', context.confidence);
     } else {
-      console.warn('No company name to search for');
+      console.warn('⚠️ No company name found - cannot perform web search');
     }
 
     // STEP 4: Generate icebreakers
