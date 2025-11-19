@@ -10,6 +10,6 @@ export function checkConfidence(context: { confidence: number }): {
   const score = context.confidence;
   return {
     score,
-    recommendation: score >= 70 ? 'proceed' : 'ask_for_input',
+    recommendation: score >= 50 ? 'proceed' : 'ask_for_input', // Lowered from 70 to 50
   };
 }
